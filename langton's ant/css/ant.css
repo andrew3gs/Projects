@@ -1,0 +1,25 @@
+table,
+tr,
+td {
+    border: 1px solid black;
+}
+
+td {
+    width: 20px;
+    height: 20px;
+}
+
+table {
+    align-content: center;
+    margin: 0 auto;
+}
+
+#thePlayGround {
+    align-items: center;
+    padding-top: 50px;
+}
+#theAnt{
+	width: 19px;
+	height: 19px;
+	transform: rotate(0deg)
+}
