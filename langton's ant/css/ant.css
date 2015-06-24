@@ -18,7 +18,7 @@ table {
     align-items: center;
     padding-top: 50px;
 }
-#theAnt{
+#theAnt, #theAnt1, #theAnt2{ 
 	width: 19px;
 	height: 19px;
 	transform: rotate(0deg)

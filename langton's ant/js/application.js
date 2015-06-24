@@ -17,98 +17,123 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
     
- 	If modifying or altering it please mention the author, Thank you
+    If modifying or altering it please mention the author, Thank you
 */
 
 
 
 
+
+var steps = 500;
+
+var i = 0;
+
+
+
+
+
 function init() {
-    var steps = 500;
-    var currentTile;
-    var i = 0;
-
-    function turn90Right() {
-        var angle = $('#theAnt').attr('rotate');
-        angle = parseInt(angle) + 90;
-        if (angle == 360) {
-            angle = 0;
-        }
-        $('#theAnt').css({
-            transform: 'rotate(' + angle + 'deg)'
-        });
-        $('#theAnt').attr('rotate', angle);
-        flipColor(currentTile)
-        moveForward(angle);
+    if($("#startProcess").attr('clicked') == 0){
+        new startProgress('#' + $('td img')[0].id);
+        $("#startProcess").attr('clicked',1);
+    }else if($("#startProcess").attr('clicked') == 1){
+        new startProgress('#' + $('td img')[1].id);
+        $("#startProcess").attr('clicked',2);
+    }else{
+        new startProgress('#' + $('td img')[2].id);
+        $("#startProcess").attr('clicked',0);
     }
+}
 
-    function turn90Left() {
 
-        var angle = $('#theAnt').attr('rotate');
-        if (angle == 0) {
-            angle = 360;
-        }
-        angle = parseInt(angle) - 90;
-        $('#theAnt').css({
-            transform: 'rotate(' + angle + 'deg)'
-        });
-        $('#theAnt').attr('rotate', angle);
-        flipColor(currentTile)
-        moveForward(angle);
+
+
+
+
+
+function turn90Right(ant) {
+    var currentTile = $(ant).parent();
+    var angle = $(ant).attr('rotate');
+    angle = parseInt(angle) + 90;
+    if (angle == 360) {
+        angle = 0;
     }
+    $(ant).css({
+        transform: 'rotate(' + angle + 'deg)'
+    });
+    $(ant).attr('rotate', angle);
+    flipColor(currentTile, ant)
+    moveForward(angle, ant);
+}
 
-    function moveForward(angle) {
-    	var img = $('#theAnt');
-    	var currTRindex = $('#theAnt').closest('tr').index();
-    	var currTDindex = $('#theAnt').parent().index();
-    	if(angle == 0 || angle == 360){
-    		//move up
-    		if(currTRindex != 0){
-    			currTRindex -= 1;
-    			$('tr:eq('+currTRindex+') td:eq('+currTDindex+')').append(img);
-    		}
-    	}else if(angle == 90){
-    		//move right
-    		if(currTDindex != 29){
-    			currTDindex += 1;
-    			$('tr:eq('+currTRindex+') td:eq('+currTDindex+')').append(img);
-    		}
-    	}else if(angle == 180){
-    		//move down
-    		if(currTRindex != 29){
-    			currTRindex += 1;
-    			$('tr:eq('+currTRindex+') td:eq('+currTDindex+')').append(img);
-    		}
-    	}else{
-    		//move left
-    		if(currTDindex != 0){
-    			currTDindex -= 1;
-    			$('tr:eq('+currTRindex+') td:eq('+currTDindex+')').append(img);
-    		}
-    	}
+function turn90Left(ant) {
+    var currentTile = $(ant).parent();
+    var angle = $(ant).attr('rotate');
+    if (angle == 0) {
+        angle = 360;
     }
+    angle = parseInt(angle) - 90;
+    $(ant).css({
+        transform: 'rotate(' + angle + 'deg)'
+    });
+    $(ant).attr('rotate', angle);
+    flipColor(currentTile, ant)
+    moveForward(angle, ant);
+}
 
-    function flipColor(currentTile) {
-        if (currentTile.css('backgroundColor') == 'rgb(0, 0, 0)') {
-            currentTile.css('backgroundColor', '#FFF');
-        } else {
-            currentTile.css('backgroundColor', 'rgb(0, 0, 0)');
+function moveForward(angle, ant) {
+    var img = $(ant);
+    var currTRindex = $(ant).closest('tr').index();
+    var currTDindex = $(ant).parent().index();
+    if (angle == 0 || angle == 360) {
+        //move up
+        if (currTRindex != 0) {
+            currTRindex -= 1;
+            $('tr:eq(' + currTRindex + ') td:eq(' + currTDindex + ')').append(img);
         }
-    }
-
-    function startProgress() {
-        currentTile = $('#theAnt').parent();
-        if (currentTile.css('backgroundColor') == 'rgb(0, 0, 0)') {
-            turn90Left();
-        } else {
-            turn90Right();
+    } else if (angle == 90) {
+        //move right
+        if (currTDindex != 29) {
+            currTDindex += 1;
+            $('tr:eq(' + currTRindex + ') td:eq(' + currTDindex + ')').append(img);
         }
-        if (i < steps) {
-            setTimeout(function() {
-                i += 1;
-                startProgress();
-            }, 500);
+    } else if (angle == 180) {
+        //move down
+        if (currTRindex != 29) {
+            currTRindex += 1;
+            $('tr:eq(' + currTRindex + ') td:eq(' + currTDindex + ')').append(img);
+        }
+    } else {
+        //move left
+        if (currTDindex != 0) {
+            currTDindex -= 1;
+            $('tr:eq(' + currTRindex + ') td:eq(' + currTDindex + ')').append(img);
         }
     }
-    startProgress();
+}
+
+function flipColor(currentTile, ant) {
+    var currentTile = $(ant).parent();
+    if (currentTile.css('backgroundColor') == 'rgb(0, 0, 0)') {
+        currentTile.css('backgroundColor', '#FFF');
+    } else {
+        currentTile.css('backgroundColor', 'rgb(0, 0, 0)');
+    }
+}
+
+function startProgress(ant) {
+
+
+    var currentTile = $(ant).parent();
+    if (currentTile.css('backgroundColor') == 'rgb(0, 0, 0)') {
+        turn90Left(ant);
+    } else {
+        turn90Right(ant);
+    }
+    if (i < steps) {
+        setTimeout(function() {
+            i += 1;
+            startProgress(ant);
+        }, 500);
+    }
 }
