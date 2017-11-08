@@ -24,7 +24,7 @@
 
 
 
-var steps = 500;
+var steps = 499;
 
 var i = 0;
 
